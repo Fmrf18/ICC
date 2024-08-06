@@ -132,8 +132,21 @@ void multMatVet (MatRow mat, Vetor v, int m, int n, Vetor res)
 
 
 // DESENVOLVER A MATVET OTIMIZADA 
-void multMatVet_O (){
+void multMatVet_O (MatRow mat, Vetor v, int m, int n, Vetor res){
 
+    /* Efetua a multiplicação */
+  if (res) {
+    for (int i=0; i < m - 2; i += 2){
+      for (int j=0; j < n; j++){
+        res[i] += mat[n*i + j] * v[j];
+        res[i+1] += mat[n*(i + 1) + j] *v[j];
+      }
+    }
+    for (int i = m-m%2; i < m; ++i) {
+      for (int j=0; j < n; ++j)
+        res[i] += mat[n*i + j] * v[j];
+    }
+  }
 }
 
 void multMatMat (MatRow A, MatRow B, int n, MatRow C)
