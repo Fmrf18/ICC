@@ -120,6 +120,54 @@ void multMatVet (MatRow mat, Vetor v, int m, int n, Vetor res)
 }
 
 
+void multMatVet_UF (MatRow mat, Vetor v, int m, int n, Vetor res)
+{
+    
+  /* Efetua a multiplicação */
+  if (res) {
+    for (int i=0; i < m-m%UF; i += UF){
+      for (int j=0; j < n; ++j){
+        res[i] += mat[n*i + j] * v[j];
+        res[i+1] += mat[n*(i + 1) + j] *v[j];
+        res[i+2] += mat[n*(i + 2) + j] *v[j];
+        res[i+3] += mat[n*(i + 3) + j] *v[j];
+      }
+    }
+    /* Calcula o restante */
+    for (int i = m-m%UF; i < m; ++i) {
+      for (int j=0; j < n; ++j)
+        res[i] += mat[n*i + j] * v[j];
+    }
+  }
+}
+
+
+// DESENVOLVER A MATVET OTIMIZADA 
+void multMatVet_O (MatRow mat, Vetor v, int m, int n, Vetor res){
+
+  /* Efetua a multiplicação */
+  if (res) {
+    int istart, iend, jstart, jend;
+
+    for (int ii=0; ii < m/BK; ++ii){
+      istart = ii*BK; iend = istart + BK;
+      for (int jj=0; jj < n/BK; ++jj){
+        jstart = jj*BK; jend = jstart + BK;
+        for (int i=istart; i < iend; i += UF){
+          for (int j=jstart; j < jend; ++j){
+            res[i] += mat[n*i + j] * v[j];
+            res[i+1] += mat[n*(i + 1) + j] *v[j];
+            res[i+2] += mat[n*(i + 2) + j] *v[j];
+            res[i+3] += mat[n*(i + 3) + j] *v[j];
+          }
+        }
+        // aqui falta tratar os casos em que BK%UF != 0 (falta termos a serem multiplicados)
+      }
+    }
+  }
+}
+
+
 /**
  *  Funcao multMatMat: Efetua multiplicacao de duas matrizes 'n x n' 
  *  @param A matriz 'n x n'
@@ -131,23 +179,7 @@ void multMatVet (MatRow mat, Vetor v, int m, int n, Vetor res)
  */
 
 
-// DESENVOLVER A MATVET OTIMIZADA 
-void multMatVet_O (MatRow mat, Vetor v, int m, int n, Vetor res){
 
-    /* Efetua a multiplicação */
-  if (res) {
-    for (int i=0; i < m - 2; i += 2){
-      for (int j=0; j < n; j++){
-        res[i] += mat[n*i + j] * v[j];
-        res[i+1] += mat[n*(i + 1) + j] *v[j];
-      }
-    }
-    for (int i = m-m%2; i < m; ++i) {
-      for (int j=0; j < n; ++j)
-        res[i] += mat[n*i + j] * v[j];
-    }
-  }
-}
 
 void multMatMat (MatRow A, MatRow B, int n, MatRow C)
 {

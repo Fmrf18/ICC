@@ -84,6 +84,12 @@ int main (int argc, char *argv[])
   timeMatVet = timestamp() - timeMatVet;
   LIKWID_MARKER_STOP("MatVet");
 
+  LIKWID_MARKER_START("MatVet_O");
+  timeMatVet = timestamp();
+  multMatVet_O (mRow_1, vet, n, n, res);
+  timeMatVet = timestamp() - timeMatVet;
+  LIKWID_MARKER_STOP("MatVet_O");
+
   LIKWID_MARKER_START("MatMat");
   timeMatMat = timestamp();
   multMatMat (mRow_1, mRow_2, n, resMat);

@@ -39,5 +39,5 @@ done
 
 ./plot.gp ${DATA_DIR}
 
-echo "powersave" > /sys/devices/system/cpu/cpufreq/policy${CPU}/scaling_governor 
+echo "powersave" > /sys/devices/system/cpu/cpufreq/policy${CPU}/scaling_governor
 
