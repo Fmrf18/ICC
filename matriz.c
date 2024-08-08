@@ -120,7 +120,7 @@ void multMatVet (MatRow mat, Vetor v, int m, int n, Vetor res)
 }
 
 
-void multMatVet_UF (MatRow mat, Vetor v, int m, int n, Vetor res)
+void multMatVet_v1 (MatRow mat, Vetor v, int m, int n, Vetor res)
 {
     
   /* Efetua a multiplicação */
@@ -141,9 +141,7 @@ void multMatVet_UF (MatRow mat, Vetor v, int m, int n, Vetor res)
   }
 }
 
-
-// DESENVOLVER A MATVET OTIMIZADA 
-void multMatVet_O (MatRow mat, Vetor v, int m, int n, Vetor res){
+void multMatVet_v2 (MatRow mat, Vetor v, int m, int n, Vetor res){
 
   /* Efetua a multiplicação */
   if (res) {
@@ -162,6 +160,34 @@ void multMatVet_O (MatRow mat, Vetor v, int m, int n, Vetor res){
           }
         }
         // aqui falta tratar os casos em que BK%UF != 0 (falta termos a serem multiplicados)
+      }
+    }
+  }
+}
+
+// DESENVOLVER A MATVET OTIMIZADA 
+void multMatVet_O (MatRow mat, Vetor v, int m, int n, Vetor res){
+
+  /* Efetua a multiplicação */
+  if (res) {
+    int istart, iend, jstart, jend;
+
+    for (int ii=0; ii < m/BK; ++ii){
+      istart = ii*BK; iend = istart + BK;
+      for (int jj=0; jj < n/BK; ++jj){
+        jstart = jj*BK; jend = jstart + BK;
+        for (int i=istart; i < (iend - (iend - istart) % UF) ; i += UF){
+          for (int j=jstart; j < jend; ++j){
+						for (int k=0; k < UF; ++k);
+							res[i + k] += mat[n*(i + k) + j] * v[j];
+          }
+        }
+        // UF não é multiplo de N
+        for (int i = iend - (iend - istart) % UF; i < iend; ++i) {
+        	for (int j = jstart; j < jend; ++j) {
+          	res[i] += mat[n * i + j] * v[j];
+          }
+        }
       }
     }
   }
